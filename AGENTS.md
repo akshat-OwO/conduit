@@ -6,8 +6,9 @@ This project uses **Ultracite**, a zero-config preset that enforces strict code 
 
 - **Format code**: `nub run fix`
 - **Check for issues**: `nub run check`
+- **Run tests**: `nub run test`
 - **Diagnose setup**: `nub run doctor`
-- **After every change**: run `nub run check`; if it reports issues, run `nub run fix` and check again.
+- **After every change**: run `nub run check` and `nub run test`; if the check reports issues, run `nub run fix` and check again.
 
 Oxlint + Oxfmt (the underlying engine) provides robust linting and formatting. Most issues are automatically fixable.
 

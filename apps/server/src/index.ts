@@ -1,16 +1,19 @@
-import { createServer } from "node:https";
+import { createServer } from "node:http";
 
 import { NodeHttpServer, NodeRuntime } from "@effect/platform-node";
 import { Effect, Layer } from "effect";
-import { HttpRouter, HttpServerResponse } from "effect/unstable/http";
+import { HttpRouter } from "effect/unstable/http";
+import { HttpApiBuilder } from "effect/unstable/httpapi";
 
+import { ConduitApi } from "./api";
+import { HealthHandlers } from "./handlers/health";
 import { MigrationService, PersistenceLive } from "./utils/migrations";
 
-const AppLive = HttpRouter.use((router) =>
-  router.add("GET", "/health", HttpServerResponse.text("ok"))
-);
+const ApiLive = HttpApiBuilder.layer(ConduitApi, {
+  openapiPath: "/openapi.json",
+}).pipe(Layer.provide(HealthHandlers));
 
-const HttpServerLive = HttpRouter.serve(AppLive).pipe(
+const HttpServerLive = HttpRouter.serve(ApiLive).pipe(
   Layer.provide(NodeHttpServer.layer(createServer, { port: 1212 }))
 );
 

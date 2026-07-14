@@ -1,8 +1,14 @@
 {
   "name": "server",
   "type": "module",
+  "exports": {
+    "./api": "./src/api.ts",
+    "./client": "./src/client.ts",
+    "./routes/health": "./src/routes/health.ts"
+  },
   "scripts": {
-    "dev": "nub watch src/index.ts"
+    "dev": "nub watch src/index.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@effect/platform-node": "catalog:effect",
@@ -10,7 +16,9 @@
     "effect": "catalog:effect"
   },
   "devDependencies": {
+    "@effect/vitest": "^4.0.0-beta.98",
     "@types/node": "catalog:types",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "^4.0.0"
   }
 }

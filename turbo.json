@@ -23,6 +23,7 @@
       "cache": false,
       "env": ["DB_PATH"],
       "persistent": true
-    }
+    },
+    "test": {}
   }
 }

@@ -37,7 +37,8 @@
     "quality:format:check": "oxfmt --check .",
     "quality:format:fix": "oxfmt --write .",
     "quality:lint": "oxlint .",
-    "quality:lint:fix": "oxlint --fix ."
+    "quality:lint:fix": "oxlint --fix .",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "oxfmt": "latest",
@@ -55,5 +56,8 @@
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "nub@0.4.11"
+  "packageManager": "nub@0.4.11",
+  "patchedDependencies": {
+    "@effect/vitest@4.0.0-beta.98": "patches/@effect+vitest@4.0.0-beta.98.patch"
+  }
 }

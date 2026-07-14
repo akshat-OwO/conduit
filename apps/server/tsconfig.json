@@ -35,5 +35,5 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "migrations/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "migrations/**/*.ts"]
 }

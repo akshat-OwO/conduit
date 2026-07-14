@@ -1,0 +1,40 @@
+diff --git a/dist/internal/internal.js b/dist/internal/internal.js
+--- a/dist/internal/internal.js
++++ b/dist/internal/internal.js
+@@ -1,7 +1,6 @@
+ /**
+  * @since 4.0.0
+  */
+-import { getCurrentSuite } from "@vitest/runner";
+ import * as Cause from "effect/Cause";
+ import * as Duration from "effect/Duration";
+ import * as Effect from "effect/Effect";
+@@ -168,7 +167,7 @@
+     }
+   });
+   if (args.length === 1) {
+-    const currentSuite = getCurrentSuite();
++    const currentSuite = V.TestRunner.getCurrentSuite();
+     const previousTasks = new Set(currentSuite.tasks);
+     args[0](makeIt(V.it));
+     const blockTasks = collectTasks(currentSuite.tasks.filter(task => !previousTasks.has(task)));
+diff --git a/src/internal/internal.ts b/src/internal/internal.ts
+--- a/src/internal/internal.ts
++++ b/src/internal/internal.ts
+@@ -2,7 +2,6 @@
+  * @since 4.0.0
+  */
+
+-import { getCurrentSuite } from "@vitest/runner"
+ import * as Cause from "effect/Cause"
+ import * as Duration from "effect/Duration"
+ import * as Effect from "effect/Effect"
+@@ -280,7 +279,7 @@
+     })
+
+   if (args.length === 1) {
+-    const currentSuite = getCurrentSuite()
++    const currentSuite = V.TestRunner.getCurrentSuite()
+     const previousTasks = new Set(currentSuite.tasks)
+
+     args[0](makeIt(V.it))
