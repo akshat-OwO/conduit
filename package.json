@@ -1,29 +1,40 @@
 {
   "name": "conduit",
   "private": true,
+  "type": "module",
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "check": "turbo run quality:check",
+    "doctor": "turbo run quality:doctor",
+    "fix": "turbo run quality:fix",
+    "format": "turbo run quality:format",
+    "format:check": "turbo run quality:format:check",
+    "format:fix": "turbo run quality:format:fix",
+    "lint": "turbo run quality:lint",
+    "lint:fix": "turbo run quality:lint:fix",
+    "quality:check": "oxfmt --check . && oxlint .",
+    "quality:doctor": "ultracite doctor",
+    "quality:fix": "oxfmt --write . && oxlint --fix .",
+    "quality:format": "oxfmt --write .",
+    "quality:format:check": "oxfmt --check .",
+    "quality:format:fix": "oxfmt --write .",
+    "quality:lint": "oxlint .",
+    "quality:lint:fix": "oxlint --fix ."
   },
   "devDependencies": {
-    "prettier": "^3.7.4",
+    "oxfmt": "latest",
+    "oxlint": "latest",
     "turbo": "^2.10.5",
-    "typescript": "5.9.2"
-  },
-  "engines": {
-    "node": ">=18"
+    "ultracite": "7.9.4"
   },
   "devEngines": {
     "packageManager": {
       "name": "nub",
-      "version": "0.4.11"
+      "version": "^0.4.11",
+      "onFail": "warn"
     }
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "nub@0.4.11"
 }
