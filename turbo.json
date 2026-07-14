@@ -1,23 +1,28 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
-    "quality:check": {},
-    "quality:doctor": {
+    "//#quality:check": {},
+    "//#quality:doctor": {
       "cache": false
     },
-    "quality:fix": {
+    "//#quality:fix": {
       "cache": false
     },
-    "quality:format": {
+    "//#quality:format": {
       "cache": false
     },
-    "quality:format:check": {},
-    "quality:format:fix": {
+    "//#quality:format:check": {},
+    "//#quality:format:fix": {
       "cache": false
     },
-    "quality:lint": {},
-    "quality:lint:fix": {
+    "//#quality:lint": {},
+    "//#quality:lint:fix": {
       "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "env": ["DB_PATH"],
+      "persistent": true
     }
   }
 }

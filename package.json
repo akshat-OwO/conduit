@@ -1,9 +1,28 @@
 {
   "name": "conduit",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*"
+    ],
+    "catalogs": {
+      "effect": {
+        "@effect/platform-node": "^4.0.0-beta.98",
+        "effect": "^4.0.0-beta.98",
+        "@effect/sql-sqlite-node": "^4.0.0-beta.98"
+      },
+      "types": {
+        "@types/node": "^26.1.1"
+      }
+    },
+    "catalog": {
+      "typescript": "^7.0.2"
+    }
+  },
   "type": "module",
   "scripts": {
     "check": "turbo run quality:check",
+    "dev": "turbo run dev",
     "doctor": "turbo run quality:doctor",
     "fix": "turbo run quality:fix",
     "format": "turbo run quality:format",

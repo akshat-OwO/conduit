@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "type": "module",
+  "scripts": {
+    "dev": "nub watch src/index.ts"
+  },
+  "dependencies": {
+    "@effect/platform-node": "catalog:effect",
+    "@effect/sql-sqlite-node": "catalog:effect",
+    "effect": "catalog:effect"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:types",
+    "typescript": "catalog:"
+  }
+}

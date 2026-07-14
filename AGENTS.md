@@ -25,6 +25,15 @@ Write code that is **accessible, performant, type-safe, and maintainable**. Focu
 - Leverage TypeScript's type narrowing instead of type assertions
 - Use meaningful variable names instead of magic numbers - extract constants with descriptive names
 
+### Effect-First Engineering
+
+- Prefer Effect APIs, services, layers, data structures, and concurrency primitives when they provide an equivalent to ad hoc JavaScript or Node.js code
+- When referencing Effect APIs, inspect the installed source code and type declarations in `node_modules` first so the implementation matches the exact version used by the project
+- Model dependencies with Effect services and `Layer` so components remain composable, testable, and reusable
+- Model expected failures in the Effect error channel instead of throwing exceptions
+- Use Effect `Config` and `Schema` for configuration and input validation
+- Keep Promise-based and exception-throwing APIs at system boundaries, and wrap them with the appropriate Effect constructors
+
 ### Modern JavaScript/TypeScript
 
 - Use arrow functions for callbacks and short functions
