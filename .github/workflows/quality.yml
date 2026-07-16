@@ -13,9 +13,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Nub
+      - name: Set up Node and Nub
         uses: nubjs/setup-nub@v0
         with:
+          node-version: 24
           nub-version: 0.4.11
       - name: Install dependencies
         run: nub ci
