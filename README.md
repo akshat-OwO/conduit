@@ -31,6 +31,7 @@ nub run check
 nub run fix
 nub run lint
 nub run format
+nub run typecheck
 nub run doctor
 ```
 

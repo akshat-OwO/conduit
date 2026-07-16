@@ -1,0 +1,27 @@
+name: Quality
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Nub
+        uses: nubjs/setup-nub@v0
+        with:
+          nub-version: 0.4.11
+      - name: Install dependencies
+        run: nub ci
+      - name: Check formatting and linting
+        run: nub run check
+      - name: Check TypeScript
+        run: nub run typecheck
+      - name: Run tests
+        run: nub run test

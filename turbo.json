@@ -19,6 +19,7 @@
     "//#quality:lint:fix": {
       "cache": false
     },
+    "quality:typecheck": {},
     "dev": {
       "cache": false,
       "env": ["DB_PATH"],

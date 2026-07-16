@@ -38,7 +38,8 @@
     "quality:format:fix": "oxfmt --write .",
     "quality:lint": "oxlint .",
     "quality:lint:fix": "oxlint --fix .",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "typecheck": "turbo run quality:typecheck"
   },
   "devDependencies": {
     "oxfmt": "latest",
