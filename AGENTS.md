@@ -29,7 +29,15 @@ Write code that is **accessible, performant, type-safe, and maintainable**. Focu
 ### Effect-First Engineering
 
 - Prefer Effect APIs, services, layers, data structures, and concurrency primitives when they provide an equivalent to ad hoc JavaScript or Node.js code
-- When referencing Effect APIs, inspect the installed source code and type declarations in `node_modules` first so the implementation matches the exact version used by the project
+- When referencing Effect APIs, inspect the installed source and type declarations in `node_modules` or the [Effect v4 documentation](https://effect-ts-effect-smol.mintlify.app/introduction) so the implementation matches the project's API version
+- Prefer inferred implementation types over redundant explicit annotations; define named types at public boundaries and add annotations only when inference is insufficient
+- Define public service methods and non-trivial internal service methods with `Effect.fn`
+- Use `Effect.fnUntraced` only for internal helpers where stack-frame and span metadata are intentionally unnecessary
+- Build service implementations with `Layer.effect(Service, Effect.gen(...))` and return them with `Service.of({ ... })`
+- Place service-specific schemas in `utils/schemas/<service-name>/*.ts`; split them into focused modules instead of accumulating schemas in the service file
+- Place service-specific errors in `utils/errors/<service-name>/*.ts` and define them with `Schema.TaggedErrorClass`
+- Pass promise-returning APIs directly to `Effect.tryPromise`; compose sequential promise operations as separate Effects instead of using `async`/`await` inside one `tryPromise`
+- Prefer Effect data structures and combinators over ad hoc JavaScript structures when an appropriate Effect API exists
 - Model dependencies with Effect services and `Layer` so components remain composable, testable, and reusable
 - Model expected failures in the Effect error channel instead of throwing exceptions
 - Use Effect `Config` and `Schema` for configuration and input validation
