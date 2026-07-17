@@ -33,4 +33,4 @@ yarn-error.log*
 *.pem
 
 # db
-db.sqlite
+db.sqlite*

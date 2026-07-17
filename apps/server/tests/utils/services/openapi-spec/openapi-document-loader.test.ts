@@ -117,12 +117,23 @@ describe("OpenApiDocumentLoader", () => {
     }).pipe(Effect.provide(OpenApiDocumentLoaderTest))
   );
 
-  it.effect("rejects structurally invalid specifications", () =>
+  it.effect("uses compatible validation by default", () =>
+    Effect.gen(function* loadCompatibleDocument() {
+      const loader = yield* OpenApiDocumentLoader;
+      const document = yield* loader.load(INVALID_SPEC_URL);
+
+      expect(document).toMatchObject({ openapi: "3.0.3" });
+    }).pipe(Effect.provide(OpenApiDocumentLoaderTest))
+  );
+
+  it.effect("supports strict schema validation", () =>
     Effect.gen(function* rejectInvalidDocument() {
       const loader = yield* OpenApiDocumentLoader;
-      const error = yield* loader.load(INVALID_SPEC_URL).pipe(Effect.flip);
+      const error = yield* loader
+        .load(INVALID_SPEC_URL, "strict")
+        .pipe(Effect.flip);
 
-      expect(error.reason).toBe("invalid-spec");
+      expect(error.reason).toBe("strict-validation-failed");
       expect(error.url).toBe(INVALID_SPEC_URL);
     }).pipe(Effect.provide(OpenApiDocumentLoaderTest))
   );
@@ -134,7 +145,7 @@ describe("OpenApiDocumentLoader", () => {
         .load(FILE_REFERENCE_SPEC_URL)
         .pipe(Effect.flip);
 
-      expect(error.reason).toBe("invalid-spec");
+      expect(error.reason).toBe("invalid-document");
     }).pipe(Effect.provide(OpenApiDocumentLoaderTest))
   );
 
