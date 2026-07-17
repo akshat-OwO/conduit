@@ -25,6 +25,7 @@ import type {
   OpenApiDocument as OpenApiDocumentType,
   OpenApiPaths,
 } from "../../schemas/openapi-spec/document";
+import type { OpenApiValidationMode } from "../../schemas/openapi-spec/request";
 import type { VerifiedOpenApiSpec } from "../../schemas/openapi-spec/verification";
 import {
   OpenApiDocumentLoader,
@@ -46,10 +47,12 @@ const OPERATION_METHODS = [
 
 interface OpenApiSpecServiceShape {
   readonly verify: (
-    specUrl: string
+    specUrl: string,
+    validationMode?: OpenApiValidationMode
   ) => Effect.Effect<VerifiedOpenApiSpec, OpenApiSpecError>;
   readonly getPaths: (
-    specUrl: string
+    specUrl: string,
+    validationMode?: OpenApiValidationMode
   ) => Effect.Effect<OpenApiPaths, OpenApiSpecError>;
 }
 
@@ -281,9 +284,12 @@ export const OpenApiSpecLayer = Layer.effect(
     );
 
     const loadSpec = Effect.fn("OpenApiSpecService.loadSpec")(
-      function* loadSpec(specUrl: string) {
+      function* loadSpec(
+        specUrl: string,
+        validationMode?: OpenApiValidationMode
+      ) {
         const url = yield* validateUrl(specUrl);
-        const loadedDocument = yield* documentLoader.load(url);
+        const loadedDocument = yield* documentLoader.load(url, validationMode);
         const document = yield* Schema.decodeUnknownEffect(OpenApiDocument)(
           loadedDocument
         ).pipe(
@@ -291,8 +297,9 @@ export const OpenApiSpecLayer = Layer.effect(
             (cause) =>
               new OpenApiSpecError({
                 cause,
-                message: "The validated OpenAPI specification is not an object",
-                reason: "invalid-spec",
+                message:
+                  "The document is missing required OpenAPI or Swagger fields",
+                reason: "invalid-document",
                 url,
               })
           )
@@ -303,9 +310,10 @@ export const OpenApiSpecLayer = Layer.effect(
     );
 
     const verify = Effect.fn("OpenApiSpecService.verify")(function* verify(
-      specUrl: string
+      specUrl: string,
+      validationMode?: OpenApiValidationMode
     ) {
-      const { document, url } = yield* loadSpec(specUrl);
+      const { document, url } = yield* loadSpec(specUrl, validationMode);
       const authentication = yield* inspectAuthentication(document);
 
       return {
@@ -317,8 +325,11 @@ export const OpenApiSpecLayer = Layer.effect(
     });
 
     const getPaths = Effect.fn("OpenApiSpecService.getPaths")(
-      function* getPaths(specUrl: string) {
-        const { document } = yield* loadSpec(specUrl);
+      function* getPaths(
+        specUrl: string,
+        validationMode?: OpenApiValidationMode
+      ) {
+        const { document } = yield* loadSpec(specUrl, validationMode);
         return document.paths ?? {};
       }
     );

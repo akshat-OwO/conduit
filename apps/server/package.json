@@ -3,8 +3,7 @@
   "type": "module",
   "exports": {
     "./api": "./src/api.ts",
-    "./client": "./src/client.ts",
-    "./routes/health": "./src/routes/health.ts"
+    "./client": "./src/client.ts"
   },
   "scripts": {
     "dev": "nub watch src/index.ts",

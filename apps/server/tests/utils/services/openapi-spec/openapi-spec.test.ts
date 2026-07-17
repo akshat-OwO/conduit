@@ -37,6 +37,19 @@ const openApiDocument = {
   paths: {
     "/health": {
       get: {
+        parameters: [
+          {
+            in: "query",
+            name: "dimensions",
+            schema: {
+              items: {
+                errorMessage: "Select a supported dimension",
+                type: "string",
+              },
+              type: "array",
+            },
+          },
+        ],
         responses: { "200": { description: "OK" } },
         security: [],
       },
@@ -176,6 +189,15 @@ describe("OpenApiSpecService", () => {
     }).pipe(Effect.provide(OpenApiSpecTest))
   );
 
+  it.effect("rejects vendor schema extensions in strict mode", () =>
+    Effect.gen(function* rejectVendorExtension() {
+      const service = yield* OpenApiSpecService;
+      const error = yield* service.verify(SPEC_URL, "strict").pipe(Effect.flip);
+
+      expect(error.reason).toBe("strict-validation-failed");
+    }).pipe(Effect.provide(OpenApiSpecTest))
+  );
+
   it.effect("treats an empty security alternative as anonymous access", () =>
     Effect.gen(function* verifyOptionalAuthentication() {
       const service = yield* OpenApiSpecService;
@@ -190,7 +212,7 @@ describe("OpenApiSpecService", () => {
       const service = yield* OpenApiSpecService;
       const error = yield* service.verify(INVALID_SPEC_URL).pipe(Effect.flip);
 
-      expect(error.reason).toBe("invalid-spec");
+      expect(error.reason).toBe("invalid-document");
     }).pipe(Effect.provide(OpenApiSpecTest))
   );
 
@@ -212,7 +234,7 @@ describe("OpenApiSpecService", () => {
         .verify("http://127.0.0.1/openapi.json")
         .pipe(Effect.flip);
 
-      expect(error.reason).toBe("invalid-spec");
+      expect(error.reason).toBe("forbidden-address");
     }).pipe(Effect.provide(OpenApiSpecLive))
   );
 

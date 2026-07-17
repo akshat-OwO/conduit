@@ -7,11 +7,17 @@ import { HttpApiBuilder } from "effect/unstable/httpapi";
 
 import { ConduitApi } from "./api";
 import { HealthHandlers } from "./handlers/health";
+import { V1Handlers } from "./handlers/v1/index";
 import { MigrationService, PersistenceLive } from "./utils/migrations";
+import { OpenApiSpecLive } from "./utils/services/openapi-spec/openapi-spec";
+
+const ApiHandlersLive = Layer.mergeAll(HealthHandlers, V1Handlers).pipe(
+  Layer.provide(OpenApiSpecLive)
+);
 
 const ApiLive = HttpApiBuilder.layer(ConduitApi, {
   openapiPath: "/openapi.json",
-}).pipe(Layer.provide(HealthHandlers));
+}).pipe(Layer.provide(ApiHandlersLive));
 
 const HttpServerLive = HttpRouter.serve(ApiLive).pipe(
   Layer.provide(NodeHttpServer.layer(createServer, { port: 1212 }))
